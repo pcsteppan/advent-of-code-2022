@@ -1,6 +1,6 @@
 use std::{fs, ops::Deref};
 
-#[derive(PartialEq, Eq, Hash, PartialOrd, Ord, Debug, Copy, Clone)]
+#[derive(PartialEq, PartialOrd, Debug, Clone, Copy)]
 enum Shape {
     Rock = 0,
     Paper = 1,
@@ -30,7 +30,7 @@ impl Shape {
 }
 
 pub fn solve_problem_part_one() {
-    let file = fs::read_to_string("./src/day_two/input.txt").expect("Could not Parse File");
+    let file = fs::read_to_string("./src/day_2/input.txt").expect("Could not Parse File");
 
     let total_score: i32 = file
         .split("\r\n")
@@ -54,7 +54,7 @@ pub fn solve_problem_part_one() {
 }
 
 pub fn solve_problem_part_two() {
-    let file = fs::read_to_string("./src/day_two/input.txt").expect("Could not Parse File");
+    let file = fs::read_to_string("./src/day_2/input.txt").expect("Could not Parse File");
 
     let total_score: i32 = file
         .split("\r\n")

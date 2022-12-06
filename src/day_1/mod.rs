@@ -1,7 +1,7 @@
 use std::fs;
 
 pub fn solve_problem() {
-    let file = fs::read_to_string("./src/day_one/input.txt").expect("Could not Parse File");
+    let file = fs::read_to_string("./src/day_1/input.txt").expect("Could not Parse File");
     let mut calorie_sums: Vec<i32> = file
         .split("\r\n\r\n")
         .map(|chunk| {
