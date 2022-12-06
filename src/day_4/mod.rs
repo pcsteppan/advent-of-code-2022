@@ -27,7 +27,7 @@ pub fn solve_problem_part_two() {
         .filter(|pair_input| {
             let (range1, range2) = ranges_from_input(pair_input);
 
-            range_overlaps_range(range1, range2) || range_overlaps_range(range2, range1)
+            range_overlaps_range(range1, range2)
         })
         .count();
 
