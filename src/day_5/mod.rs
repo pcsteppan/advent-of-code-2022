@@ -15,7 +15,6 @@ pub fn solve_problem_part_one() {
         .skip(10)
         .map(|instruction_str| {
             let mut tokens = instruction_str.split(' ');
-            println!("{instruction_str}");
             Instruction {
                 quantity: tokens.nth(1).unwrap().parse::<i32>().unwrap(),
                 from: tokens.nth(1).unwrap().parse::<usize>().unwrap(),
