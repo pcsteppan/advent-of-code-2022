@@ -1,13 +1,27 @@
-use std::fs;
+use std::{fs, ops::RangeTo};
 
 #[derive(Debug)]
 pub struct Instruction {
-    quantity: i32,
+    quantity: usize,
     from: usize,
     to: usize,
 }
 
+#[derive(PartialEq)]
+pub enum MachineType {
+    Type9000,
+    Type9001,
+}
+
 pub fn solve_problem_part_one() {
+    solve_problem(MachineType::Type9000);
+}
+
+pub fn solve_problem_part_two() {
+    solve_problem(MachineType::Type9001);
+}
+
+pub fn solve_problem(machine_type: MachineType) {
     let file = fs::read_to_string("./src/day_5/input.txt").expect("Could not Parse File");
 
     let instructions: Vec<Instruction> = file
@@ -16,7 +30,7 @@ pub fn solve_problem_part_one() {
         .map(|instruction_str| {
             let mut tokens = instruction_str.split(' ');
             Instruction {
-                quantity: tokens.nth(1).unwrap().parse::<i32>().unwrap(),
+                quantity: tokens.nth(1).unwrap().parse::<usize>().unwrap(),
                 from: tokens.nth(1).unwrap().parse::<usize>().unwrap(),
                 to: tokens.nth(1).unwrap().parse::<usize>().unwrap(),
             }
@@ -39,7 +53,7 @@ pub fn solve_problem_part_one() {
     let stacks = instructions
         .iter()
         .fold(initial_stacks, |stacks: [Vec<char>; 9], instruction| {
-            execute_instruction_on_stacks(instruction, stacks.clone())
+            execute_instruction_on_stacks(instruction, stacks.clone(), &machine_type)
         });
 
     let answer: String = stacks
@@ -51,21 +65,32 @@ pub fn solve_problem_part_one() {
     println!("{answer}");
 }
 
-// version 1
 pub fn execute_instruction_on_stacks(
     instruction: &Instruction,
     stacks: [Vec<char>; 9],
+    machine_type: &MachineType,
 ) -> [Vec<char>; 9] {
     let mut new_stacks = stacks.clone();
     let mut quantity = instruction.quantity;
 
-    while quantity > 0 {
-        let item = new_stacks[instruction.from - 1].pop().unwrap_or('_');
-        if item == '_' {
-            break;
+    if machine_type == &MachineType::Type9000 {
+        while quantity > 0 {
+            let item = new_stacks[instruction.from - 1].pop().unwrap_or('_');
+            if item == '_' {
+                break;
+            }
+            new_stacks[instruction.to - 1].push(item);
+            quantity -= 1;
         }
-        new_stacks[instruction.to - 1].push(item);
-        quantity -= 1;
+    } else if machine_type == &MachineType::Type9001 {
+        let stack_height = new_stacks[instruction.from - 1].len();
+        let quantity = std::cmp::min(instruction.quantity, stack_height);
+
+        let mut crates_to_move = new_stacks[instruction.from - 1]
+            .splice(stack_height - quantity..stack_height, None)
+            .collect::<Vec<char>>();
+
+        new_stacks[instruction.to - 1].append(&mut crates_to_move);
     }
 
     return new_stacks;
