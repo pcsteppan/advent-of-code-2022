@@ -103,6 +103,8 @@ fn parse_input_to_directory(file: &str) -> Rc<RefCell<Directory>> {
     let mut current_directory = root.clone();
 
     file.split("\r\n").for_each(|line| {
+        let command = line.split(' ').next().unwrap();
+
         if line.starts_with("$ ls") || line.eq("") {
             // do nothing
         } else if line.starts_with("dir") {
@@ -118,19 +120,23 @@ fn parse_input_to_directory(file: &str) -> Rc<RefCell<Directory>> {
         } else if line.starts_with("$ cd") {
             let new_directory_name = line.split("cd ").last().unwrap();
 
-            if new_directory_name.eq("/") {
-            } else if new_directory_name.eq("..") {
-                let current_parent = current_directory.borrow().parent_directory.clone().unwrap();
-                current_directory = current_parent;
-            } else {
-                let directory_to_move_to = current_directory
-                    .borrow()
-                    .sub_directories
-                    .get(new_directory_name)
-                    .unwrap()
-                    .clone();
+            match new_directory_name {
+                ".." => {
+                    let current_parent =
+                        current_directory.borrow().parent_directory.clone().unwrap();
+                    current_directory = current_parent;
+                }
+                "/" => {}
+                _ => {
+                    let directory_to_move_to = current_directory
+                        .borrow()
+                        .sub_directories
+                        .get(new_directory_name)
+                        .unwrap()
+                        .clone();
 
-                current_directory = directory_to_move_to;
+                    current_directory = directory_to_move_to;
+                }
             }
         } else {
             let filesize = line.split(" ").next().unwrap().parse::<i32>().unwrap();
