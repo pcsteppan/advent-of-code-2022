@@ -66,10 +66,10 @@ impl Directory {
             .unwrap_or(0);
 
         if min_viable_subdirectory > 0 {
-            return min_viable_subdirectory;
+            min_viable_subdirectory
+        } else {
+            sub_directory_sizes.sum::<i32>() + self.filesizes
         }
-
-        return sub_directory_sizes.sum::<i32>() + self.filesizes;
     }
 }
 
