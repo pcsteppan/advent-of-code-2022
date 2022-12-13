@@ -130,3 +130,9 @@ pub fn transpose<T: Copy>(v: Vec<Vec<T>>) -> Vec<Vec<T>> {
         .map(|i| v.iter().map(|row| row[i]).collect())
         .collect()
 }
+
+// create a cast_ray function
+// params:
+// &vec<vec<u8>>, x, y, direction, comparator, initial_value
+// refactor solution to use this function
+// which will allow for an easier solution to part two
