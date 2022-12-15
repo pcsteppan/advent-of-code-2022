@@ -52,14 +52,11 @@ impl StringState {
         while distance > 0 {
             self.update_head_position(&command.0);
             for i in 0..self.tail.len() {
-                match i {
-                    0 => {
-                        Self::update_tail_position(&mut self.head, &mut self.tail[i]);
-                    }
-                    _ => {
-                        let mut pseudo_head = self.tail[i - 1];
-                        Self::update_tail_position(&mut pseudo_head, &mut self.tail[i]);
-                    }
+                if i == 0 {
+                    Self::update_tail_position(&mut self.head, &mut self.tail[i]);
+                } else {
+                    let mut pseudo_head = self.tail[i - 1];
+                    Self::update_tail_position(&mut pseudo_head, &mut self.tail[i]);
                 }
             }
 
@@ -78,8 +75,7 @@ impl StringState {
         let y_delta = head.1 - tail.1;
 
         if x_delta.abs() >= 2 || y_delta.abs() >= 2 {
-            tail.0 = tail.0 + x_delta.signum();
-            tail.1 = tail.1 + y_delta.signum();
+            *tail = *tail + Vec2(x_delta.signum(), y_delta.signum());
         }
     }
 }
