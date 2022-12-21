@@ -12,6 +12,7 @@ mod day_9;
 
 mod day_10;
 mod day_12;
+mod day_14;
 
 fn main() {
     // day_1::solve_problem();
@@ -32,6 +33,8 @@ fn main() {
     // day_9::solve_problem_part_two();
     // day_10::solve_problem_part_one();
     // day_10::solve_problem_part_two();
-    day_12::solve_problem_part_one();
-    day_12::solve_problem_part_two();
+    // day_12::solve_problem_part_one();
+    // day_12::solve_problem_part_two();
+    day_14::solve_problem_part_one();
+    day_14::solve_problem_part_two();
 }
