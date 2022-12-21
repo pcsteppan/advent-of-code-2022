@@ -1,7 +1,4 @@
-use std::{
-    fmt::{format, Display},
-    fs,
-};
+use std::{fmt::Display, fs};
 
 type Vec2 = (usize, usize);
 
@@ -26,11 +23,11 @@ impl State {
         let mut height = containing_box.2 + 1;
         let mut width = containing_box.1 - containing_box.0 + 1;
         let width_offset = containing_box.0;
-        // hack
+
+        // hack to widen simulation space when infinite floor is enabled
         if infinite_floor {
             height += 2;
             width += 1000;
-            // width_offset += 500;
         }
 
         let mut state = vec![vec![false; width]; height];
@@ -192,19 +189,6 @@ pub fn solve_problem_part_one() {
 
 pub fn solve_problem_part_two() {
     solve_problem(true);
-}
-
-fn get_test_state() -> State {
-    State {
-        map: vec![
-            vec![false, false, false],
-            vec![false, false, false],
-            vec![true, true, true],
-            vec![false, false, false],
-        ],
-        width_offset: 0,
-        has_infinite_floor: false,
-    }
 }
 
 #[test]
